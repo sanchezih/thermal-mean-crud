@@ -1,3 +1,4 @@
+const pkg = require('./package.json');
 const express = require("express");
 const server = express();
 
@@ -6,12 +7,16 @@ const body_parser = require("body-parser");
 // parse JSON (application/json content-type)
 server.use(body_parser.json());
 
-const port = 4000;
+const port = process.env.PORT || 4000;
 
 // << db setup >>
 const db = require("./db");
 const dbName = "data";
 const collectionName = "movies";
+
+server.get("/healthz", function callback(request, response) {
+    response.send('ok');
+});
 
 // << db init >>
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
@@ -84,5 +89,6 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
 });
 
 server.listen(port, () => {
-    console.log(`Server listening at ${port}`);
-});
+    console.info(`${pkg.name} started`);
+    console.info(`listening on port ${port}`);
+   });
