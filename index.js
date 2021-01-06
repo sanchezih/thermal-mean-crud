@@ -14,7 +14,7 @@ const db = require("./db");
 const dbName = "data";
 const collectionName = "movies";
 
-server.get("/healthz", function callback(request, response) {
+server.get("/health", function callback(request, response) {
     response.send('ok');
 });
 
@@ -46,6 +46,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
             response.json(result);
         });
     });
+
     server.delete("/items/:id", (request, response) => {
         const itemId = request.params.id;
         console.log("Delete item with id: ", itemId);
@@ -91,4 +92,4 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
 server.listen(port, () => {
     console.info(`${pkg.name} started`);
     console.info(`listening on port ${port}`);
-   });
+});
